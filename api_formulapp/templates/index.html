@@ -1,3 +1,31 @@
 <!DOCTYPE html>
 {% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %}
-<h2
+<h2 class="text-light">Season: {{ season }}</h2>
+<h3 class="text-light">Total Races: {{ total_races }}</h3>
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Round</th>
+                <th>Race Name</th>
+                <th>Circuit</th>
+                <th>Country</th>
+                <th>Locality</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for race in races %}
+            <tr>
+                <td>{{ race.round_number }}</td>
+                <td>{{ race.race_name }}</td>
+                <td>{{ race.circuit_name }}</td>
+                <td>{{ race.country }}</td>
+                <td>{{ race.locality }}</td>
+                <td>{{ race.race_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
