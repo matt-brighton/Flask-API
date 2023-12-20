@@ -7,13 +7,23 @@ views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET'])
 def index():
-    json_data = requests.get('http://ergast.com/api/f1/2024.json')
-    data = json.loads(json_data.content)
-    season = data['MRData']['RaceTable']['season']
-    total_races = data['MRData']['total']
-    races = []
+    season_race_data = requests.get('http://ergast.com/api/f1/2024.json?limit=1000')
+    total_seasons_data = requests.get('http://ergast.com/api/f1/seasons.json?limit=1000')
+    season_race_data_json = json.loads(season_race_data.content)
+    total_seasons_data_json = json.loads(total_seasons_data.content)
+    season_year = season_race_data_json['MRData']['RaceTable']['season']
+    total_races = season_race_data_json['MRData']['total']
+    all_seasons = []
+    races = []     
 
-    for race in data['MRData']['RaceTable']['Races']:
+    for seasons in total_seasons_data_json['MRData']['SeasonTable']['Seasons']:
+        all_season_year = seasons['season']
+        
+        all_seasons.append({
+        'seasons': all_season_year
+        })
+    
+    for race in season_race_data_json['MRData']['RaceTable']['Races']:
         round_number = race['round']
         race_name = race['raceName']
         circuit_name = race['Circuit']['circuitName']
@@ -29,5 +39,7 @@ def index():
             'locality': locality,
             'race_date': race_date
         })
+        
+        print(all_seasons)
 
-    return render_template('index.html', season=season, total_races=total_races, races=races)
+    return render_template('index.html', season_year=season_year, total_races=total_races, races=races, seasons=all_seasons)
