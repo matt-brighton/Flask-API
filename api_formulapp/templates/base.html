@@ -21,7 +21,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-person-badge navbar-brand"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style= "max-height: 280px; overflow-y: auto;">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="max-height: 280px; overflow-y: auto">
                                 <a class="dropdown-item" href="/get_all_drivers"><b>ALL</b></a>
                                 {% for driver in drivers %}
                                 <a class="dropdown-item" href="#">{{ driver.given_name[0] + ". " + driver.family_name }}</a>
@@ -32,9 +32,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-calendar4-week navbar-brand"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown2" style= "max-height: 280px; overflow-y: auto;">
-                                
-                                {% for season in years %}
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
+                                {% for season in years|sort(attribute='seasons', reverse=True) %}
                                 <a class="dropdown-item" href="#">{{ season.seasons }}</a>
                                 {% endfor %}
                             </div>
