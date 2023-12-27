@@ -3519,7 +3519,7 @@ fieldset:disabled .btn {
 .dropdown-item:active {
     color: var(--bs-dropdown-link-active-color);
     text-decoration: none;
-    background-color: var(--bs-dropdown-link-active-bg);
+    background-color: var(--bs-danger);
 }
 .dropdown-item.disabled,
 .dropdown-item:disabled {
@@ -3837,7 +3837,7 @@ fieldset:disabled .btn {
 .navbar-brand:focus,
 .navbar-brand:hover {
     color: var(--bs-danger);
-    font-weight: bold;
+    font-weight: 450;
 }
 .navbar-nav {
     --bs-nav-link-padding-x: 0;
@@ -3867,7 +3867,7 @@ fieldset:disabled .btn {
 .navbar-text a,
 .navbar-text a:focus,
 .navbar-text a:hover {
-    color: var(--bs-navbar-active-color);
+    color: --bs-danger;
 }
 .navbar-collapse {
     flex-basis: 100%;
