@@ -42,18 +42,25 @@
                                 <i class="bi bi-calendar4-week navbar-brand d-inline-block"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
-                                {% for season in years|sort(attribute='seasons', reverse=True) %}
-                                <a class="dropdown-item" href="#">{{ season.seasons }}</a>
-                                {% endfor %}
+                                <form method="POST" id="select_season" action="/get_selected_season">
+                                    <select name="season_selection" class="form-control dropdown-item">
+                                        {% for season in years|sort(attribute='seasons', reverse=True) %}
+                                        <option value="{{ season.seasons }}">{{ season.seasons }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" id="submit_season" class="btn btn-danger">Change Year</button>
+                                </form>
                             </div>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-
         <div class="bg-secondary p-5">{% block content %} {% endblock %}</div>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
     </body>
 </html>

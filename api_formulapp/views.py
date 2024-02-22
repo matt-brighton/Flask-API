@@ -1,7 +1,7 @@
 import json
 import logging
 import requests
-from flask import render_template, Blueprint, request
+from flask import render_template, Blueprint, request, jsonify
 
 views = Blueprint('views', __name__)
 
@@ -100,3 +100,38 @@ def get_all_drivers():
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
+
+
+@views.route('/get_selected_season', methods=['POST'])
+def get_selected_season():
+    if request.method == 'POST':
+        try:
+            selected_year = request.form.get('season_selection')
+            selected_season_race_data = get_data_from_api(
+                API_BASE_URL + selected_year + '.json?limit=1000')
+
+            season_year = selected_season_race_data['MRData']['RaceTable']['season']
+
+            races = []
+            for race in selected_season_race_data['MRData']['RaceTable']['Races']:
+                round_number = race['round']
+                race_name = race['raceName']
+                circuit_name = race['Circuit']['circuitName']
+                country = race['Circuit']['Location']['country']
+                locality = race['Circuit']['Location']['locality']
+                race_date = race['date']
+
+                races.append({
+                    'round_number': round_number,
+                    'race_name': race_name,
+                    'circuit_name': circuit_name,
+                    'country': country,
+                    'locality': locality,
+                    'race_date': race_date
+                })
+
+            return jsonify({'races': races, 'season year': season_year})
+
+        except Exception as e:
+            logging.error(f"An error occurred: {str(e)}")
+            return render_template('error.html', error_message=str(e))
