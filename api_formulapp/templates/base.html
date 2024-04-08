@@ -9,7 +9,7 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-            <div class="container">
+            <div class="container-fluid ms-5 p-2">
                 <a class="navbar-brand" href="/"><span class="h3">Historical F1</span></a>
                 <button
                     class="navbar-toggler"
@@ -41,14 +41,16 @@
                             <a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-calendar4-week navbar-brand d-inline-block"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
+                            <div class="dropdown-menu p-2" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
                                 <form method="POST" id="select_season" action="/get_selected_season">
-                                    <select name="season_selection" class="form-control dropdown-item">
+                                    <select name="season_selection" class="form-control dropdown-item mb-2">
                                         {% for season in years|sort(attribute='seasons', reverse=True) %}
                                         <option value="{{ season.seasons }}">{{ season.seasons }}</option>
                                         {% endfor %}
                                     </select>
-                                    <button type="submit" id="submit_season" class="btn btn-danger">Change Year</button>
+                                    <div class="container">
+                                        <button type="submit" id="submit_season" class="btn btn-sm btn-danger">Change Year</button>
+                                    </div>
                                 </form>
                             </div>
                         </li>

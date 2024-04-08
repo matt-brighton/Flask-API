@@ -6,6 +6,77 @@
     <h3 class="text-light">Total Races: {{ total_races }}</h3>
 </div>
 <div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Nationality</th>
+                            <th>Constructor</th>
+                            <th>Points</th>
+                            <th>Wins</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for driver_standings in drivers_top_3.StandingsLists[0].DriverStandings[0:1] %}
+                        <tr class="table-warning">
+                            <td>C</td>
+                            <td>{{ driver_standings.Driver.givenName }} {{ driver_standings.Driver.familyName }}</td>
+                            <td>{{ driver_standings.Driver.nationality }}</td>
+                            <td>{{ driver_standings.Constructors[0].name }}</td>
+                            <td>{{ driver_standings.points }}</td>
+                            <td>{{ driver_standings.wins }}</td>
+                        </tr>
+                        {% endfor %} {% for driver_standings in drivers_top_3.StandingsLists[0].DriverStandings[1:3] %}
+                        <tr>
+                            <td>{{ driver_standings.position }}</td>
+                            <td>{{ driver_standings.Driver.givenName }} {{ driver_standings.Driver.familyName }}</td>
+                            <td>{{ driver_standings.Driver.nationality }}</td>
+                            <td>{{ driver_standings.Constructors[0].name }}</td>
+                            <td>{{ driver_standings.points }}</td>
+                            <td>{{ driver_standings.wins }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Name</th>
+                            <th>Nationality</th>
+                            <th>Points</th>
+                            <th>Wins</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for constructor_standings in constructor_top_3.StandingsLists[0].ConstructorStandings[0:1] %}
+                        <tr class="table-warning">
+                            <td>C</td>
+                            <td>{{ constructor_standings.Constructor.name}}</td>
+                            <td>{{ constructor_standings.Constructor.nationality }}</td>
+                            <td>{{ constructor_standings.points }}</td>
+                            <td>{{ constructor_standings.wins }}</td>
+                        </tr>
+                        {% endfor %} {% for constructor_standings in constructor_top_3.StandingsLists[0].ConstructorStandings[1:3] %}
+                        <tr>
+                            <td>{{ constructor_standings.position }}</td>
+                            <td>{{ constructor_standings.Constructor.name}}</td>
+                            <td>{{ constructor_standings.Constructor.nationality }}</td>
+                            <td>{{ constructor_standings.points }}</td>
+                            <td>{{ constructor_standings.wins }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <table class="table table-striped table-dark">
         <thead>
             <tr>
@@ -15,17 +86,23 @@
                 <th>Country</th>
                 <th>Locality</th>
                 <th>Date</th>
+                <th>Winner</th>
+                <th>Constructor</th>
+                <th>Fastest Lap</th>
             </tr>
         </thead>
         <tbody>
-            {% for race in races %}
+            {% for race in race_results_1st.Races %}
             <tr>
-                <td>{{ race.round_number }}</td>
-                <td>{{ race.race_name }}</td>
-                <td>{{ race.circuit_name }}</td>
-                <td>{{ race.country }}</td>
-                <td>{{ race.locality }}</td>
-                <td>{{ race.race_date }}</td>
+                <td>{{ race.round }}</td>
+                <td>{{ race.raceName }}</td>
+                <td>{{ race.Circuit.circuitName }}</td>
+                <td>{{ race.Circuit.Location.country }}</td>
+                <td>{{ race.Circuit.Location.locality }}</td>
+                <td>{{ race.date }}</td>
+                <td>{{ race.Results[0].Driver.givenName}} {{ race.Results[0].Driver.familyName }}</td>
+                <td>{{ race.Results[0].Constructor.name}}</td>
+                <td>{{ race.Results[0].FastestLap.Time.time }}</td>
             </tr>
             {% endfor %}
         </tbody>
