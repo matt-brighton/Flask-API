@@ -25,15 +25,6 @@ def process_drivers(driver_data):
              'nationality': driver['nationality']} for driver in driver_data['DriverTable']['Drivers']]
 
 
-def process_races(race_data):
-    return [{'round_number': race['round'],
-             'race_name': race['raceName'],
-             'circuit_name': race['Circuit']['circuitName'],
-             'country': race['Circuit']['Location']['country'],
-             'locality': race['Circuit']['Location']['locality'],
-             'race_date': race['date']} for race in race_data['RaceTable']['Races']]
-
-
 @views.route('/', methods=['GET'])
 def index():
     try:
@@ -56,11 +47,12 @@ def index():
         drivers = process_drivers(all_drivers_data)
         all_season_years = [{'seasons': season['season']}
                             for season in all_seasons_data['SeasonTable']['Seasons']]
-        races = process_races(current_season_race_data)
         drivers_top_3 = drivers_top_3['StandingsTable']
         constructor_top_3 = constructor_top_3['StandingsTable']
         race_results_1st = race_results_1st['RaceTable']
-        return render_template('index.html', season_year=season_year, total_races=total_races, races=races, years=all_season_years, drivers=drivers, drivers_top_3=drivers_top_3, constructor_top_3=constructor_top_3, race_results_1st=race_results_1st)
+        return render_template('index.html', season_year=season_year, total_races=total_races, years=all_season_years,
+                               drivers=drivers, drivers_top_3=drivers_top_3, constructor_top_3=constructor_top_3,
+                               race_results_1st=race_results_1st)
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
@@ -99,7 +91,6 @@ def get_selected_season():
 
             season_year = selected_season_race_data['RaceTable']['season']
             total_races = selected_season_race_data['total']
-            races = process_races(selected_season_race_data)
             drivers = process_drivers(driver_data)
             years = [{'seasons': season['season']}
                      for season in total_seasons_data['SeasonTable']['Seasons']]
@@ -107,7 +98,9 @@ def get_selected_season():
             constructor_top_3 = constructor_top_3['StandingsTable']
             race_results_1st = race_results_1st['RaceTable']
 
-            return render_template('index.html', season_year=season_year, total_races=total_races, races=races, years=years, drivers=drivers, drivers_top_3=drivers_top_3, constructor_top_3=constructor_top_3, race_results_1st=race_results_1st)
+            return render_template('index.html', season_year=season_year, total_races=total_races, years=years,
+                                   drivers=drivers, drivers_top_3=drivers_top_3, constructor_top_3=constructor_top_3,
+                                   race_results_1st=race_results_1st)
         except Exception as e:
             logging.error(f"An error occurred: {str(e)}")
             return render_template('error.html', error_message=str(e))
