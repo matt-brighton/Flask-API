@@ -27,17 +27,6 @@
                             <a class="nav-link navbar-brand ms-3" href="/"> Home </a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-person-badge navbar-brand d-inline-block"></i>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown1" style="max-height: 280px; overflow-y: auto">
-                                <a class="dropdown-item" href="/get_all_drivers"><b>ALL</b></a>
-                                {% for driver in drivers %}
-                                <a class="dropdown-item" href="#">{{ driver.given_name[0] + ". " + driver.family_name }}</a>
-                                {% endfor %}
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-calendar4-week navbar-brand d-inline-block"></i>
                             </a>
