@@ -85,26 +85,80 @@
                 <th>Circuit</th>
                 <th>Country</th>
                 <th>Date</th>
-                <th>Winner</th>
-                <th>Constructor</th>
             </tr>
         </thead>
         <tbody>
             {% for race in race_results.Races %}
-            <tr>
+            <tr class="table-dark clickable-row" data-bs-toggle="modal" data-bs-target="#raceModal{{ race.round }}" style="cursor: pointer">
                 <td>{{ race.round }}</td>
                 <td>{{ race.raceName }}</td>
                 <td>{{ race.Circuit.circuitName }}</td>
                 <td>{{ race.Circuit.Location.locality }}, {{ race.Circuit.Location.country }}</td>
                 <td>{{ race.date }}</td>
-                <td>{{ race.Results[0].Driver.givenName}} {{ race.Results[0].Driver.familyName }}</td>
-                <td>{{ race.Results[0].Constructor.name}}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Race Modal -->
+    {% for race in race_results.Races %}
+    <div class="modal fade" id="raceModal{{ race.round }}" tabindex="-1" aria-labelledby="raceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="raceModalLabel">{{ race.raceName }} - Round {{ race.round }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-light">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Name</th>
+                                    <th>Nationality</th>
+                                    <th>Constructor</th>
+                                    <th>Points</th>
+                                    <th>Status</th>
+                                    <th>Fastest Lap</th>
+                                    <th>Grid Position</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for result in race.Results %}
+                                <tr>
+                                    <td>{{ result.position }}</td>
+                                    <td>{{ result.Driver.givenName}} {{ result.Driver.familyName }}</td>
+                                    <td>{{ result.Driver.nationality }}</td>
+                                    <td>{{ result.Constructor.name }}</td>
+                                    <td>{{ result.points }}</td>
+                                    <td>{{ result.status }}</td>
+                                    {% if result.FastestLap %}
+                                    <td>{{ result.FastestLap.Time.time }}</td>
+                                    {% else %}
+                                    <td>N/A</td>
+                                    {% endif %} {% if result.grid and result.position %} {% set difference = result.grid | int - result.position | int %} {% if difference < 0 %}
+                                    <td><i class="bi bi-arrow-down-square-fill text-danger"></i> {{ result.grid }} ({{ difference }})</td>
+                                    {% elif difference == 0 %}
+                                    <td><i class="bi bi-dash-square-fill text-warning"></i> {{ result.grid }} ({{ difference }})</td>
+                                    {% else %}
+                                    <td><i class="bi bi-arrow-up-square-fill text-success"></i> {{ result.grid }} ({{ difference }})</td>
+                                    {% endif %} {% else %}
+                                    <td>N/A</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
+<!-- Drivers Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" data-bs-backdrop="static" id="driver_modal">
     <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
@@ -144,6 +198,7 @@
     </div>
 </div>
 
+<!-- Constructors Modal -->
 <div class="modal fade" tabindex="-1" role="dialog" data-bs-backdrop="static" id="constructor_modal">
     <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">

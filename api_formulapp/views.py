@@ -30,7 +30,7 @@ def index():
         constructor_top_3 = get_data_from_api(
             ERGAST_API_BASE_URL + '2024/constructorStandings.json?limit=10000')
         race_results = get_data_from_api(
-            ERGAST_API_BASE_URL + '2024/results.json?limit=100000000000')
+            ERGAST_API_BASE_URL + '2024/results.json?limit=1000000')
 
         season_year = current_season_race_data['RaceTable']['season']
         total_races = current_season_race_data['total']
@@ -62,7 +62,7 @@ def get_selected_season():
             constructor_top_3 = get_data_from_api(
                 ERGAST_API_BASE_URL + selected_season_year + '/constructorStandings.json?limit=10000')
             race_results = get_data_from_api(
-                ERGAST_API_BASE_URL + selected_season_year + '/results.json?limit=100000000000')
+                ERGAST_API_BASE_URL + selected_season_year + '/results.json?limit=1000000')
 
             season_year = selected_season_race_data['RaceTable']['season']
             total_races = selected_season_race_data['total']
