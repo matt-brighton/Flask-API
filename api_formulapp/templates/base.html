@@ -8,76 +8,10 @@
         <title>{% block title %}Base{% endblock %}</title>
     </head>
     <body class="bg-light">
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid ms-5 p-2">
-                <a class="navbar-brand" href="/"><span class="h3">Historical F1</span></a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-link">
-                            <a class="nav-link navbar-brand ms-3" href="/"> Home </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-calendar4-week navbar-brand d-inline-block"></i>
-                            </a>
-                            <div class="dropdown-menu p-2" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
-                                <form method="POST" id="select_season" action="/get_selected_season">
-                                    <select name="season_selection" class="form-control dropdown-item mb-2">
-                                        {% for season in years|sort(attribute='seasons', reverse=True) %}
-                                        <option value="{{ season.seasons }}">{{ season.seasons }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="container">
-                                        <button type="submit" id="submit_season" class="btn btn-sm btn-danger">Change Year</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-question-square navbar-brand d-inline-block"></i>
-                            </a>
-                            <div class="dropdown-menu p-2" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
-                                <form method="POST" id="quiz" action="/quiz_me">
-                                    <select name="quiz_selection" class="form-control dropdown-item mb-2">
-                                        {% for season in years|sort(attribute='seasons', reverse=True) %}
-                                        <option value="{{ season.seasons }}">{{ season.seasons }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <div class="container">
-                                        <button type="submit" id="submit_quiz" class="btn btn-sm btn-danger">Quiz Me!</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <!-- Navbar -->
+        {% include 'navbar.html' %}
         <!-- Flash messages -->
-        <div>
-            {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for category, message in messages %} {% if category == 'error' %}
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label></button>
-            </div>
-            {% else %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                {% endif %} {% endfor %} {% endif %} {% endwith %}
-            </div>
-        </div>
+        {% include 'messages.html' %}
         <div class="bg-secondary p-5">{% block content %} {% endblock %}</div>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
         <script

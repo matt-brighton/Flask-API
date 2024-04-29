@@ -2,6 +2,9 @@ import json
 import logging
 import requests
 from flask import render_template, Blueprint, request, jsonify, flash, redirect, url_for
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 
 views = Blueprint('views', __name__)
 
@@ -115,8 +118,11 @@ def submit_form():
     quiz_selected_year = request.form.get('quiz_selected_year')
 
     if input_year == quiz_selected_year:
+        
         flash("Correct!", category='success')
     else:
         flash("Incorrect. Please try again.", category='error')
 
     return redirect(url_for('views.quiz_me'))
+
+

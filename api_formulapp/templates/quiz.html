@@ -1,14 +1,13 @@
 <!DOCTYPE html> {% extends 'base.html' %} {% block title %}Quiz{% endblock %} {% block content %}
 
 <div class="container-fluid">
-    <br /><br />
     <h2 class="text-light">{{ quiz_selected_year }} Quiz</h2>
 </div>
 <div class="container-fluid">
     <form method="POST" action="/submit_form">
         <div class="mb-3">
             <label for="input_year" class="form-label">Enter Year</label>
-            <input type="text" class="form-control" />
+            <input type="text" class="form-control" name="input_year" />
             <input type="hidden" name="quiz_selected_year" value="{{ quiz_selected_year }}" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>

@@ -1,0 +1,65 @@
+<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+	<div class="container-fluid ms-5 p-2">
+		<a class="navbar-brand" href="{{ url_for('views.index') }}"><span class="h3">Historical F1</span></a>
+		<button
+			class="navbar-toggler"
+			type="button"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent"
+			aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto">
+				<li class="nav-item">
+					<a class="nav-link text-danger ms-2" href="{{ url_for('auth.user', name='Dave')}}" id="navbarDropdown2" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="bi bi-person-fill navbar-brand d-inline-block"></i>
+					</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle text-danger ms-2" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="bi bi-calendar4-week navbar-brand d-inline-block"></i>
+					</a>
+					<div class="dropdown-menu p-2" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
+						<form method="POST" id="select_season" action="/get_selected_season">
+							<select name="season_selection" class="form-control dropdown-item mb-2">
+								{% for season in years|sort(attribute='seasons', reverse=True) %}
+								<option value="{{ season.seasons }}">{{ season.seasons }}</option>
+								{% endfor %}
+							</select>
+							<div class="container">
+								<button type="submit" id="submit_season" class="btn btn-sm btn-danger">Change Year</button>
+							</div>
+						</form>
+					</div>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="bi bi-question-square navbar-brand d-inline-block"></i>
+					</a>
+					<div class="dropdown-menu p-2" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
+						<form method="POST" id="quiz" action="/quiz_me">
+							<select name="quiz_selection" class="form-control dropdown-item mb-2">
+								{% for season in years|sort(attribute='seasons', reverse=True) %}
+								<option value="{{ season.seasons }}">{{ season.seasons }}</option>
+								{% endfor %}
+							</select>
+							<div class="container">
+								<button type="submit" id="submit_quiz" class="btn btn-sm btn-danger">Quiz Me!</button>
+							</div>
+						</form>
+					</div>
+				</li>
+			</ul>
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" id="navbarDropdown2" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="bi bi-person-fill-add navbar-brand d-inline-block"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
