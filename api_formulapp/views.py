@@ -1,7 +1,7 @@
 import json
 import logging
 import requests
-from flask import render_template, Blueprint, request, jsonify
+from flask import render_template, Blueprint, request, jsonify, flash, redirect, url_for
 
 views = Blueprint('views', __name__)
 
@@ -78,3 +78,45 @@ def get_selected_season():
         except Exception as e:
             logging.error(f"An error occurred: {str(e)}")
             return render_template('error.html', error_message=str(e))
+
+
+@views.route('/quiz_me', methods=['POST', 'GET'])
+def quiz_me():
+    if request.method == 'POST':
+        try:
+            quiz_selected_year = request.form.get('quiz_selection')
+            total_seasons_data = get_data_from_api(
+                ERGAST_API_BASE_URL + 'seasons.json?limit=1000')
+
+            years = [{'seasons': season['season']}
+                     for season in total_seasons_data['SeasonTable']['Seasons']]
+
+            return render_template('quiz.html', quiz_selected_year=quiz_selected_year, years=years)
+        except Exception as e:
+            logging.error(f"An error occurred: {str(e)}")
+            return render_template('error.html', error_message=str(e))
+    else:
+        try:
+            total_seasons_data = get_data_from_api(
+                ERGAST_API_BASE_URL + 'seasons.json?limit=1000')
+
+            years = [{'seasons': season['season']}
+                     for season in total_seasons_data['SeasonTable']['Seasons']]
+
+            return render_template('quiz.html', years=years)
+        except Exception as e:
+            logging.error(f"An error occurred: {str(e)}")
+            return render_template('error.html', error_message=str(e))
+
+
+@views.route('/submit_form', methods=['POST'])
+def submit_form():
+    input_year = request.form.get('input_year')
+    quiz_selected_year = request.form.get('quiz_selected_year')
+
+    if input_year == quiz_selected_year:
+        flash("Correct!", category='success')
+    else:
+        flash("Incorrect. Please try again.", category='error')
+
+    return redirect(url_for('views.quiz_me'))
