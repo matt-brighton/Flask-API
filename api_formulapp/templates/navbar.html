@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid ms-5 p-2">
-        <a class="navbar-brand" href="{{ url_for('views.index') }}"><span class="h3">Historical F1</span></a>
+<div class="container-fluid ms-5 p-2">
+        <a class="navbar-brand me-5" href="{{ url_for('views.index') }}"><span class="h3">Historical F1</span></a>
         <button
             class="navbar-toggler"
             type="button"
@@ -13,11 +13,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-danger ms-2" href="{{ url_for('auth.user', username='Dave')}}" id="navbarDropdown2" role="button" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-person-fill navbar-brand d-inline-block"></i>
-                    </a>
-                </li>
+                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-danger ms-2" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-calendar4-week navbar-brand d-inline-block"></i>
@@ -53,7 +49,12 @@
                     </div>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto me-5">
+                <li class="nav-item">
+                    <a class="nav-link text-danger ms-2" href="{{ url_for('auth.user', username='Dave')}}" id="navbarDropdown2" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-person-fill navbar-brand d-inline-block"></i>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" id="navbarDropdown2" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill-add navbar-brand d-inline-block"></i>

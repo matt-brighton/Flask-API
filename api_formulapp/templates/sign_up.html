@@ -4,10 +4,14 @@
 {% else %}
 <h2>Please confirm your name!</h2>
 <br />
-<form method="POST" class="form">
-    {{ form.hidden_tag() }}{{ form.name.label(class='form-label') }} {{ form.name(class="form-control") }}
-    <br />
-    {{ form.submit(class="btn btn-danger") }}
-</form>
+<div>
+	<form method="POST" class="form">
+		<div class="row">
+			{{ form.hidden_tag() }} {{ form.name.label(class='form-label') }}
+			<div class="col">{{ form.name(class="form-control", placeholder="Enter Username") }}</div>
+			<div class="col">{{ form.submit(class="btn btn-danger") }}</div>
+		</div>
+	</form>
+</div>
 
 {% endif %} {% endblock %}

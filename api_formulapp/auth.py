@@ -16,7 +16,7 @@ def user(username):
 
 # Form class
 class SignUpForm(FlaskForm):
-    name = StringField("Please confirm your name", validators=[DataRequired()])
+    name = StringField("Please confirm your preferred username", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 
