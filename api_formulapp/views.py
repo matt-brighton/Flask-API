@@ -118,11 +118,9 @@ def submit_form():
     quiz_selected_year = request.form.get('quiz_selected_year')
 
     if input_year == quiz_selected_year:
-        
+
         flash("Correct!", category='success')
     else:
         flash("Incorrect. Please try again.", category='error')
 
     return redirect(url_for('views.quiz_me'))
-
-

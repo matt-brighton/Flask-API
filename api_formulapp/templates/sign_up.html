@@ -1,6 +1,13 @@
-<!DOCTYPE html> {% extends 'base.html' %} {% block title %}Sign Up{% endblock %} {% block content %}
+<!DOCTYPE html> {% extends 'base.html' %} {% block title %}Sign Up{% endblock %} {% block content %} {% if username %}
+<h2>Hi {{username}}, you already have an account!</h2>
 
-<h2>Sign Up</h2>
+{% else %}
+<h2>Please confirm your name!</h2>
+<br />
+<form method="POST" class="form">
+    {{ form.hidden_tag() }}{{ form.name.label(class='form-label') }} {{ form.name(class="form-control") }}
+    <br />
+    {{ form.submit(class="btn btn-danger") }}
+</form>
 
-
-{% endblock %}
+{% endif %} {% endblock %}

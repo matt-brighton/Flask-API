@@ -8,21 +8,24 @@ from wtforms.validators import DataRequired
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/user/<name>')
-def user(name):
-    return render_template("user.html", name=name)
+
+@auth.route('/user/<username>')
+def user(username):
+    return render_template("user.html", username=username)
 
 
 # Form class
 class SignUpForm(FlaskForm):
     name = StringField("Please confirm your name", validators=[DataRequired()])
-    submit= SubmitField("Submit")
-    
+    submit = SubmitField("Submit")
+
+
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
-    name = None
+    username = None
     form = SignUpForm()
     if form.validate_on_submit():
-        name = form.name.data
+        username = form.name.data
         form.name.date = ""
-    return render_template('sign_up.html', name=name, form=form)
+        flash(f"Sign Up Success, thanks {username}.")
+    return render_template('sign_up.html', username=username, form=form)
