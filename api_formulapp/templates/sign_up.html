@@ -4,34 +4,34 @@
 {% else %}
 <br />
 <div>
-	<form method="POST" class="form">
-		<div class="row">
-			{{ form.hidden_tag() }}
-			<div class="col">{{ form.email.label }}: {{ form.email(class="form-control", placeholder="Enter Email") }}</div>
-			<div class="col">{{ form.name.label }}: {{ form.name(class="form-control", placeholder="Enter Username") }}</div>
-		</div>
-		<br />
-		<div class="row">
-			<div class="col">{{ form.password.label }}: {{ form.password(class="form-control", placeholder="Enter Password") }}</div>
-			<div class="col">{{ form.confirm.label }}: {{ form.confirm(class="form-control", placeholder="Confirm Password") }}</div>
-			<br />
-			{% if form.password.errors %}
-			<div class="container">
-				<br />
-				{% for error in form.password.errors %}
-				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					{{ error }}
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label></button>
-				</div>
-				{% endfor %}
-			</div>
-			{% endif %}
-		</div>
-		<br />
-            <div class="flex">
-			<div>{{ form.submit(class="btn btn-danger") }}</div>
-            <div><button type="button" class="btn btn-danger" href="/signup">Cancel</div>
+    <form method="POST" class="form">
+        <div class="row">
+            {{ form.hidden_tag() }}
+            <div class="col">{{ form.email.label }}: {{ form.email(class="form-control", placeholder="Enter Email") }}</div>
+            <div class="col">{{ form.name.label }}: {{ form.name(class="form-control", placeholder="Enter Username") }}</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col">{{ form.password.label }}: {{ form.password(class="form-control", placeholder="Enter Password") }}</div>
+            <div class="col">{{ form.confirm.label }}: {{ form.confirm(class="form-control", placeholder="Confirm Password") }}</div>
+            <br />
+            {% if form.password.errors %}
+            <div class="container">
+                <br />
+                {% for error in form.password.errors %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label></button>
+                </div>
+                {% endfor %}
             </div>
-	</form>
+            {% endif %}
+        </div>
+        <br />
+        <div class="inline-flex">
+            {{ form.submit(class="btn btn-danger display-inline me-2") }}
+            <a href="/signup"><button type="button" class="btn btn-danger display-inline">Cancel</button></a>
+        </div>
+    </form>
 </div>
 {% endif %} {% endblock %}

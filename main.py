@@ -1,4 +1,4 @@
-from api_formulapp.init import create_app
+from api_formulapp import create_app
 
 app = create_app()
 

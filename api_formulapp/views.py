@@ -5,6 +5,7 @@ from flask import render_template, Blueprint, request, jsonify, flash, redirect,
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
+from flask_login import login_required, current_user
 
 views = Blueprint('views', __name__)
 
@@ -45,7 +46,7 @@ def index():
         race_results = race_results['RaceTable']
         return render_template('index.html', season_year=season_year, total_races=total_races, years=all_season_years,
                                drivers_top_3=drivers_top_3, constructor_top_3=constructor_top_3,
-                               race_results=race_results)
+                               race_results=race_results, user=current_user)
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
@@ -77,7 +78,7 @@ def get_selected_season():
 
             return render_template('index.html', season_year=season_year, total_races=total_races, years=years,
                                    drivers_top_3=drivers_top_3, constructor_top_3=constructor_top_3,
-                                   race_results=race_results)
+                                   race_results=race_results, user=current_user)
         except Exception as e:
             logging.error(f"An error occurred: {str(e)}")
             return render_template('error.html', error_message=str(e))
@@ -94,7 +95,7 @@ def quiz_me():
             years = [{'seasons': season['season']}
                      for season in total_seasons_data['SeasonTable']['Seasons']]
 
-            return render_template('quiz.html', quiz_selected_year=quiz_selected_year, years=years)
+            return render_template('quiz.html', quiz_selected_year=quiz_selected_year, years=years, user=current_user)
         except Exception as e:
             logging.error(f"An error occurred: {str(e)}")
             return render_template('error.html', error_message=str(e))
