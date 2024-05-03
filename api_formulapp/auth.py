@@ -59,7 +59,7 @@ def signup():
         favourite_team = None
         favourite_driver = None
         user = Users.query.filter_by(email=email).first()
-        form = SignUpForm()
+        form = SignUpForm(request.form)
 
         
         if form.validate_on_submit():
