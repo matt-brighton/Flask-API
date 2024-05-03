@@ -13,10 +13,16 @@ from . import db
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/user/<username>')
-def user(username):
-    return render_template("user.html", username=username)
+@auth.route('/user/<current_user>')
+@ login_required
+def user(current_user):
+    return render_template("user.html", current_user=current_user)
 
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('views.index'))
 
 # Form class
 class SignUpForm(FlaskForm):
@@ -32,27 +38,37 @@ class SignUpForm(FlaskForm):
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
-    username = None
-    email = None
-    password = None
-    user = Users.query.filter_by(email=email).first()
-    form = SignUpForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        username = form.name.data
-        password = form.password.data
-        form.name.date = ""
-        if user:
-            flash("email already exists", category='error')
-        else:
-            new_user = Users(email=email, username=username, password=generate_password_hash(
-                password, method='sha256'))
+    if request.method == 'POST':
+        username = None
+        email = None
+        password = None
+        user = Users.query.filter_by(email=email).first()
+        form = SignUpForm()
+        if form.validate_on_submit():
+            email = form.email.data
+            username = form.name.data
+            password = form.password.data
+            form.name.date = ""
+            if user:
+                flash("email already exists", category='error')
+            else:
+                new_user = Users(email=email, username=username, password=generate_password_hash(
+                    password, method='sha256'))
             try:
                 db.session.add(new_user)
                 db.session.commit()
                 flash(f"Sign Up Success, thanks {username}")
+                login_user(new_user, remember=True)
 
             except Exception as exception:
                 db.session.rollback()
                 flash(f"Sign Up Failure: {str(exception)}", category="error")
-    return render_template('sign_up.html', username=username, email=email, form=form, password=password, user=current_user)
+    # return render_template('sign_up.html', username=username, email=email, form=form, password=password, user=current_user)
+        return redirect(url_for('auth.user', username=new_user.username))
+    else:
+        username = None
+        email = None
+        password = None
+        user = Users.query.filter_by(email=email).first()
+        form = SignUpForm()
+        return render_template('sign_up.html', username=username, email=email, form=form, password=password, user=current_user)

@@ -54,7 +54,7 @@
                         <i class="bi bi-person-fill navbar-brand d-inline-block"></i>
                     </a>
                 </li>
-                {% if user.is_authenticated %} {% else%}
+                {% if current_user.is_authenticated %} {% else%}
                 <li class="nav-item">
                     <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" id="navbarDropdown2" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill-add navbar-brand d-inline-block"></i>
