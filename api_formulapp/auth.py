@@ -13,9 +13,9 @@ from . import db
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/user/<current_user>')
+@auth.route('/user')
 @ login_required
-def user(current_user):
+def user():
     return render_template("user.html", current_user=current_user)
 
 @auth.route('/logout')
@@ -48,7 +48,7 @@ def signup():
             email = form.email.data
             username = form.name.data
             password = form.password.data
-            form.name.date = ""
+            form.name.data = ""
             if user:
                 flash("email already exists", category='error')
             else:
@@ -64,7 +64,7 @@ def signup():
                 db.session.rollback()
                 flash(f"Sign Up Failure: {str(exception)}", category="error")
     # return render_template('sign_up.html', username=username, email=email, form=form, password=password, user=current_user)
-        return redirect(url_for('auth.user', username=new_user.username))
+        return redirect(url_for('auth.user', current_user=current_user))
     else:
         username = None
         email = None
