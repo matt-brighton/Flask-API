@@ -21,10 +21,18 @@ class SignUpForm(FlaskForm):
                        validators=[DataRequired()])
     password = PasswordField('New Password', validators=[
                              DataRequired(), EqualTo('confirm', message='Passwords must match')])
-    favourite_team = SelectField("Who is your favourite team?", validators=[DataRequired()])
-    favourite_driver = SelectField("Who is your favourite driver?", validators=[DataRequired()])
+    favourite_team = SelectField("Who is your favourite team?", choices=[], validators=[DataRequired()])
+    favourite_driver = SelectField("Who is your favourite driver?", choices=[], validators=[DataRequired()])
     confirm = PasswordField('Repeat Password')
     submit = SubmitField("Submit")
+    
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        data = get_data_from_api(ERGAST_API_BASE_URL + 'constructors.json?limit=1')
+        constructor_list = data.get('MRData', {}).get('ConstructorTable', {}).get('Constructors', {})
+        self.favourite_team.choices = [(constructor['constructorId'], constructor['name']) for constructor in constructor_list]
+
+
 
 
 @auth.route('/user')
@@ -52,12 +60,7 @@ def signup():
         favourite_driver = None
         user = Users.query.filter_by(email=email).first()
         form = SignUpForm()
-        try:
-            constructor_list = get_data_from_api(
-            ERGAST_API_BASE_URL + 'constructors.json?limit=10000')
-        except Exception as e:
-            logging.error(f"An error occurred: {str(e)}")
-            return render_template('error.html', error_message=str(e))
+
         
         if form.validate_on_submit():
             email = form.email.data
