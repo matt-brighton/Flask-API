@@ -11,3 +11,5 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.String(150))
     username = db.Column(db.String(150))
     created_date = db.Column(db.DateTime(timezone=True), default=func.now())
+    favourite_team = db.Column(db.String(50))
+    favourite_driver = db.Column(db.String(50))
