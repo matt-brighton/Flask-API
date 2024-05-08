@@ -11,9 +11,9 @@
             <div class="col">{{ form.name.label }}: {{ form.name(class="form-control", placeholder="Enter Username") }}</div>
         </div>
         <br />
-		<div class="row">
-            <div class="col">{{ form.favourite_driver.label }}: {{ form.favourite_driver(class="form-control", placeholder="Enter Email") }}</div>
-            <div class="col">{{ form.favourite_team.label }}: {{ form.favourite_team(class="form-control", placeholder="Enter Username") }}</div>
+        <div class="row">
+            <div class="col">{{ form.favourite_driver.label }}: {{ form.favourite_driver(class="form-select select2") }}</div>
+            <div class="col">{{ form.favourite_team.label }}: {{ form.favourite_team(class="form-select select2") }}</div>
         </div>
         <div class="row">
             <div class="col">{{ form.password.label }}: {{ form.password(class="form-control", placeholder="Enter Password") }}</div>

@@ -1,7 +1,69 @@
 <!DOCTYPE html> {% extends 'base.html' %} {% block title %}User Profile{% endblock %} {% block content %}
 
-<h3>Hi, {{ current_user.username }}</h2>
+<div class="container-fluid">
+    <div class="container">
+        <h3 class="text-light">{{ current_user.username }}</h3>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Favourite Driver
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>{{ current_user.favourite_driver }}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Favourite Team
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <strong>{{ current_user.favourite_team }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
 
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <table class="table table-dark table-hover">
+                    <thead class="table table-dark">
+                        <tr>
+                            <th>Season</th>
+                            <th>Total Races</th>
+                            <th>Races Finished</th>
+                            <th>Average Grid Position</th>
+                            <th>Average Finish Position</th>
+                            <th>Total Points</th>
+                            <th>Average Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for season, data in season_data.items() %}
+                        <tr>
+                            <td>{{ season }}</td>
+                            <td>{{ data['total_races'] }}</td>
+                            <td>{{ data['races_finished'] }}</td>
+                            <td>{{ data['average_grid_position']|round(2) }}</td>
+                            <td>{{ data['average_finishing_position']|round(2) }}</td>
+                            <td>{{ data['total_points'] + data['total_sprint_points']|round(1) }}</td>
+                            <td>{{ '%.2f' % ((data['total_points'] + data['total_sprint_points']) / (data['total_races'] + data['total_sprint_races'])) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
