@@ -55,26 +55,26 @@
                     </a>
                 </li>
                 <div class="vr d-lg-flex h-auto mx-lg-2 text-black"></div>
-                <li class="nav-item">
+                <ul class="nav-item">
                     <a class="nav-link text-danger ms-2" href="{{ url_for('auth.logout')}}" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-x-fill navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Log Out</span>
                     </a>
-                </li>
+                </ul>
                 {% else%}
-                <li class="nav-item">
+                <ul class="nav-item">
                     <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill-add navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Sign Up</span>
                     </a>
-                </li>
+                </ul>
                 <div class="vr d-lg-flex h-auto mx-lg-2 text-black"></div>
-                <li class="nav-item">
+                <ul class="nav-item">
                     <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill-lock navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Log In</span>
                     </a>
-                </li>
+                </ul>
                 {% endif %}
             </ul>
         </div>

@@ -86,9 +86,10 @@ def get_selected_season():
 
 @views.route('/quiz_me', methods=['POST', 'GET'])
 def quiz_me():
+    quiz_selected_year = request.form.get('quiz_selection')
     if request.method == 'POST':
         try:
-            quiz_selected_year = request.form.get('quiz_selection')
+            
             total_seasons_data = get_data_from_api(
                 ERGAST_API_BASE_URL + 'seasons.json?limit=1000')
 
@@ -107,7 +108,7 @@ def quiz_me():
             years = [{'seasons': season['season']}
                      for season in total_seasons_data['SeasonTable']['Seasons']]
 
-            return render_template('quiz.html', years=years)
+            return render_template('quiz.html', years=years, quiz_selected_year=quiz_selected_year)
         except Exception as e:
             logging.error(f"An error occurred: {str(e)}")
             return render_template('error.html', error_message=str(e))
