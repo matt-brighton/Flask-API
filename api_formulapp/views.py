@@ -2,9 +2,6 @@ import json
 import logging
 import requests
 from flask import render_template, Blueprint, request, jsonify, flash, redirect, url_for
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
 from flask_login import login_required, current_user
 
 views = Blueprint('views', __name__)
@@ -86,32 +83,19 @@ def get_selected_season():
 
 @views.route('/quiz_me', methods=['POST', 'GET'])
 def quiz_me():
-    quiz_selected_year = request.form.get('quiz_selection')
-    if request.method == 'POST':
-        try:
-            
-            total_seasons_data = get_data_from_api(
-                ERGAST_API_BASE_URL + 'seasons.json?limit=1000')
+    quiz_selected_year = request.form.get(
+        'quiz_selected_year') if request.method == 'POST' else request.args.get('quiz_selected_year')
+    try:
+        total_seasons_data = get_data_from_api(
+            ERGAST_API_BASE_URL + 'seasons.json?limit=1000')
 
-            years = [{'seasons': season['season']}
-                     for season in total_seasons_data['SeasonTable']['Seasons']]
+        years = [{'seasons': season['season']}
+                 for season in total_seasons_data['SeasonTable']['Seasons']]
 
-            return render_template('quiz.html', quiz_selected_year=quiz_selected_year, years=years, user=current_user)
-        except Exception as e:
-            logging.error(f"An error occurred: {str(e)}")
-            return render_template('error.html', error_message=str(e))
-    else:
-        try:
-            total_seasons_data = get_data_from_api(
-                ERGAST_API_BASE_URL + 'seasons.json?limit=1000')
-
-            years = [{'seasons': season['season']}
-                     for season in total_seasons_data['SeasonTable']['Seasons']]
-
-            return render_template('quiz.html', years=years, quiz_selected_year=quiz_selected_year)
-        except Exception as e:
-            logging.error(f"An error occurred: {str(e)}")
-            return render_template('error.html', error_message=str(e))
+        return render_template('quiz.html', quiz_selected_year=quiz_selected_year, years=years, user=current_user)
+    except Exception as e:
+        logging.error(f"An error occurred: {str(e)}")
+        return render_template('error.html', error_message=str(e))
 
 
 @views.route('/submit_form', methods=['POST'])
@@ -125,4 +109,4 @@ def submit_form():
     else:
         flash("Incorrect. Please try again.", category='error')
 
-    return redirect(url_for('views.quiz_me'))
+    return redirect(url_for('views.quiz_me', quiz_selected_year=quiz_selected_year))

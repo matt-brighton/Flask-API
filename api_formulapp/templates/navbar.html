@@ -31,7 +31,7 @@
                     </a>
                     <div class="dropdown-menu p-2" aria-labelledby="navbarDropdown2" style="max-height: 280px; overflow-y: auto">
                         <form method="POST" id="quiz" action="/quiz_me">
-                            <select name="quiz_selection" class="form-control dropdown-item mb-2">
+                            <select name="quiz_selected_year" class="form-control dropdown-item mb-2">
                                 {% for season in years|sort(attribute='seasons', reverse=True) %}
                                 <option value="{{ season.seasons }}">{{ season.seasons }}</option>
                                 {% endfor %}
