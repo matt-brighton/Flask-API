@@ -10,7 +10,63 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <strong>{{ current_user.favourite_driver }}</strong>
+                        <h2>{{ current_user.favourite_driver.capitalize() }} Season Stats</h2>
+                        <div class="container-fluid">
+                            <table class="table table-hover">
+                                <thead class="table">
+                                    <tr>
+                                        <th>Season</th>
+                                        <th>Total Races</th>
+                                        <th>Races Finished</th>
+                                        <th>Average Grid Position</th>
+                                        <th>Average Finish Position</th>
+                                        <th>Total Points</th>
+                                        <th>Average Points</th>
+                                        <th>Final Position</th>
+                                        <th>Constructor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for season, data in season_data.items() %} {% if data['final_position'] == 1%}
+                                    <tr class="table-warning">
+                                        <td>{{ season }}</td>
+                                        <td>{{ data['total_races'] }}</td>
+                                        <td>{{ data['races_finished'] }}</td>
+                                        <td>{{ data['average_grid_position']|round(2) }}</td>
+                                        {% if data['average_grid_position']|round(2) < data['average_finishing_position']|round(2) %}
+                                        <td>{{ data['average_finishing_position']|round(2) }} <i class="bi bi-arrow-down-square-fill text-danger"></i></td>
+                                        {% elif data['average_grid_position']|round(2) == data['average_finishing_position']|round(2)%}
+                                        <td>{{ data['average_finishing_position']|round(2) }} <i class="bi bi-dash-square-fill text-warning"></i></td>
+                                        {% else %}
+                                        <td>{{ data['average_finishing_position']|round(2) }} <i class="bi bi-arrow-up-square-fill text-success"></i></td>
+                                        {% endif %}
+                                        <td>{{ data['total_points'] + data['total_sprint_points']|round(1) }}</td>
+                                        <td>{{ '%.2f' % ((data['total_points'] + data['total_sprint_points']) / (data['total_races'] + data['total_sprint_races'])) }}</td>
+                                        <td>C</td>
+                                        <td>{{ data['constructor'] }}</td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td>{{ season }}</td>
+                                        <td>{{ data['total_races'] }}</td>
+                                        <td>{{ data['races_finished'] }}</td>
+                                        <td>{{ data['average_grid_position']|round(2) }}</td>
+                                        {% if data['average_grid_position']|round(2) < data['average_finishing_position']|round(2) %}
+                                        <td>{{ data['average_finishing_position']|round(2) }} <i class="bi bi-arrow-down-square-fill text-danger"></i></td>
+                                        {% elif data['average_grid_position']|round(2) == data['average_finishing_position']|round(2)%}
+                                        <td>{{ data['average_finishing_position']|round(2) }} <i class="bi bi-dash-square-fill text-warning"></i></td>
+                                        {% else %}
+                                        <td>{{ data['average_finishing_position']|round(2) }} <i class="bi bi-arrow-up-square-fill text-success"></i></td>
+                                        {% endif %}
+                                        <td>{{ data['total_points'] + data['total_sprint_points']|round(1) }}</td>
+                                        <td>{{ '%.2f' % ((data['total_points'] + data['total_sprint_points']) / (data['total_races'] + data['total_sprint_races'])) }}</td>
+                                        <td>{{ data['final_position'] }}</td>
+                                        <td>{{ data['constructor'] }}</td>
+                                    </tr>
+                                    {% endif %} {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

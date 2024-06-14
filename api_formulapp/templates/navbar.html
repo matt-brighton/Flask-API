@@ -25,7 +25,7 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-danger ms-2" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-danger ms-2" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-question-square navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Quiz</span>
                     </a>
@@ -43,8 +43,8 @@
                     </div>
                 </li>
             </ul>
+            <ul class="navbar-nav me-5">
             {% if current_user.is_authenticated %}
-            <ul class="navbar-nav ms-auto">
                 <li class="navbar-brand me-5 mt-2">
                     <span class="h6">Logged in as {{ current_user.username}}</span>
                 </li>
@@ -55,26 +55,26 @@
                     </a>
                 </li>
                 <div class="vr d-lg-flex h-auto mx-lg-2 text-black"></div>
-                <ul class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link text-danger ms-2" href="{{ url_for('auth.logout')}}" role="button" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-x-fill navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Log Out</span>
                     </a>
-                </ul>
+                </li>
                 {% else%}
-                <ul class="nav-item">
-                    <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" role="button" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill-add navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Sign Up</span>
                     </a>
-                </ul>
+                </li>
                 <div class="vr d-lg-flex h-auto mx-lg-2 text-black"></div>
-                <ul class="nav-item">
-                    <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" role="button" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item">
+                    <a class="nav-link text-danger ms-2" href="{{ url_for('auth.signup')}}" aria-haspopup="true" aria-expanded="false">
                         <i class="bi bi-person-fill-lock navbar-brand d-inline-block"></i>
                         <span class="d-none d-sm-inline">Log In</span>
                     </a>
-                </ul>
+                </li>
                 {% endif %}
             </ul>
         </div>
