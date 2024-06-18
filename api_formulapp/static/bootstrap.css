@@ -4383,7 +4383,7 @@ fieldset:disabled .btn {
 .accordion {
     --bs-accordion-color: var(--bs-body-color);
     --bs-accordion-bg: var(--bs-body-bg);
-    --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
+    --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.5s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
     --bs-accordion-border-color: var(--bs-border-color);
     --bs-accordion-border-width: var(--bs-border-width);
     --bs-accordion-border-radius: var(--bs-border-radius);
@@ -4402,7 +4402,7 @@ fieldset:disabled .btn {
     --bs-accordion-body-padding-x: 1.25rem;
     --bs-accordion-body-padding-y: 1rem;
     --bs-accordion-active-color: var(--bs-black);
-    --bs-accordion-active-bg: #f1aeb5;
+    --bs-accordion-active-bg: var(--bs-white);
 }
 .accordion-button {
     position: relative;
