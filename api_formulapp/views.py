@@ -36,7 +36,6 @@ def get_season_data(season_year):
 def get_all_seasons_data():
     all_seasons_data = get_data_from_api(f"{ERGAST_API_BASE_URL}seasons.json?limit=1000")
     return [{'seasons': season['season']} for season in all_seasons_data['SeasonTable']['Seasons']]
-    
 
 
 @views.route('/', methods=['GET'])

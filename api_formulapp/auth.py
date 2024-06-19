@@ -53,11 +53,27 @@ def user():
             ERGAST_API_BASE_URL + 'drivers/' + current_user.favourite_driver + '/results.json?limit=10000000000')
         races = favourite_driver_data['RaceTable']['Races']
 
+        get_driver_names = get_data_from_api(
+            ERGAST_API_BASE_URL + 'drivers/' + current_user.favourite_driver + '.json')
+        driver_first_name = get_driver_names['DriverTable']['Drivers'][0]['givenName']
+        driver_surname = get_driver_names['DriverTable']['Drivers'][0]['familyName']
+        dob = get_driver_names['DriverTable']['Drivers'][0]['dateOfBirth']
+        nationality = get_driver_names['DriverTable']['Drivers'][0]['nationality']
+        driver_number = get_driver_names['DriverTable']['Drivers'][0]['permanentNumber']
+        wiki = get_driver_names['DriverTable']['Drivers'][0]['url']
+
+        get_constructor_names = get_data_from_api(
+            ERGAST_API_BASE_URL + 'constructors/' + current_user.favourite_team + '.json')
+        constructor_name = get_constructor_names['ConstructorTable']['Constructors'][0]['name']
+        constructor_nationality = get_constructor_names[
+            'ConstructorTable']['Constructors'][0]['nationality']
+        constructor_wiki = get_constructor_names['ConstructorTable']['Constructors'][0]['url']
+
         # Fetch sprint race data
         favourite_driver_sprint_data = get_data_from_api(
             ERGAST_API_BASE_URL + 'drivers/' + current_user.favourite_driver + '/sprint.json?limit=10000000000')
         sprint_races = favourite_driver_sprint_data['RaceTable']['Races']
-        
+
         favourite_driver_standings = get_data_from_api(
             ERGAST_API_BASE_URL + 'drivers/' + current_user.favourite_driver + '/driverstandings.json?limit=10000000000')
         standings = favourite_driver_standings['StandingsTable']['StandingsLists']
@@ -114,17 +130,21 @@ def user():
                 data['average_grid_position'] = 0
                 data['average_finishing_position'] = 0
                 data['average_points'] = 0
-        
+
         for standing in standings:
             season = standing['season']
             if season in season_data and 'DriverStandings' in standing and standing['DriverStandings']:
-                season_data[season]['final_position'] = int(standing['DriverStandings'][0]['position'])
+                season_data[season]['final_position'] = int(
+                    standing['DriverStandings'][0]['position'])
                 if 'Constructors' in standing['DriverStandings'][0]:
-                    season_data[season]['constructor'] = str(standing['DriverStandings'][0]['Constructors'][0]['name'])
+                    season_data[season]['constructor'] = str(
+                        standing['DriverStandings'][0]['Constructors'][0]['name'])
                 else:
                     season_data[season]['constructor'] = 'Unknown'
-        
-        return render_template('user.html', season_data=season_data)
+
+        return render_template('user.html', season_data=season_data, driver_first_name=driver_first_name, driver_surname=driver_surname, 
+                               dob=dob, nationality=nationality, driver_number=driver_number, wiki=wiki, constructor_name=constructor_name, 
+                               constructor_nationality=constructor_nationality, constructor_wiki=constructor_wiki)
 
 
 @ auth.route('/logout')
