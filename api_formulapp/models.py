@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-
+# TABLES
 class Users(db.Model, UserMixin):
     __tablename__ = 'Users'
     id = db.Column(db.Integer, primary_key=True)

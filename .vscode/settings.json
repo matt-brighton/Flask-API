@@ -1,4 +1,10 @@
 {
-    "cSpell.words": ["afhjadfnaodfnoakdvno", "formulapp", "sqlalchemy", "werkzeug"],
+    "cSpell.words": [
+        "afhjadfnaodfnoakdvno",
+        "formulapp",
+        "openf",
+        "sqlalchemy",
+        "werkzeug"
+    ],
     "CodeGPT.apiKey": "OpenAI"
 }

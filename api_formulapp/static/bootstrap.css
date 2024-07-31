@@ -1937,6 +1937,12 @@ progress {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+.table-responsive2 {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 250px;
+}
 @media (max-width: 575.98px) {
     .table-responsive-sm {
         overflow-x: auto;
@@ -4240,6 +4246,14 @@ fieldset:disabled .btn {
     border: var(--bs-card-border-width) solid var(--bs-card-border-color);
     border-radius: var(--bs-card-border-radius);
 }
+.card2 {
+    transition: 300ms;
+}
+.card2:hover {
+    transform: scale(0.98);
+    box-shadow: var(--bs-box-shadow-lg)
+}
+    
 .card > hr {
     margin-right: 0;
     margin-left: 0;

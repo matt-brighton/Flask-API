@@ -1,103 +1,115 @@
 <!DOCTYPE html>
 {% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %}
 <div class="container-fluid">
-    <h2 class="text-light">Season: {{ season_year }}</h2>
-    <h3 class="text-light">Total Races: {{ total_races }}</h3>
 </div>
 <div>
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <table class="table table-dark table-hover">
-                    <thead class="table table-dark">
-                        <tr>
-                            <th>Position</th>
-                            <th>Name</th>
-                            <th>Nationality</th>
-                            <th>Constructor</th>
-                            <th>Points</th>
-                            <th>Wins</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for driver_standings in drivers_standings.StandingsLists[0].DriverStandings[0:1] %}
-                        <tr class="table-warning clickable-row" data-bs-toggle="modal" data-bs-target="#driver_modal" style="cursor: pointer">
-                            <td>C</td>
-                            <td>{{ driver_standings.Driver.givenName }} {{ driver_standings.Driver.familyName }}</td>
-                            <td>{{ driver_standings.Driver.nationality }}</td>
-                            <td>{{ driver_standings.Constructors[0].name }}</td>
-                            <td>{{ driver_standings.points }}</td>
-                            <td>{{ driver_standings.wins }}</td>
-                        </tr>
-                        {% endfor %} {% for driver_standings in drivers_standings.StandingsLists[0].DriverStandings[1:3] %}
-                        <tr class="table-dark clickable-row" data-bs-toggle="modal" data-bs-target="#driver_modal" style="cursor: pointer">
-                            <td>{{ driver_standings.position }}</td>
-                            <td>{{ driver_standings.Driver.givenName }} {{ driver_standings.Driver.familyName }}</td>
-                            <td>{{ driver_standings.Driver.nationality }}</td>
-                            <td>{{ driver_standings.Constructors[0].name }}</td>
-                            <td>{{ driver_standings.points }}</td>
-                            <td>{{ driver_standings.wins }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="bg-white pb-3 rounded-4 shadow card2">
+                    <h4 class="text-light bg-danger rounded-top-4 p-2 text-center">{{ season_year }} Drivers Championship</h4>
+                    <table class="table table-hover">
+                        <thead class="table">
+                            <tr>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Nationality</th>
+                                <th>Constructor</th>
+                                <th>Points</th>
+                                <th>Wins</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for driver_standings in drivers_standings.StandingsLists[0].DriverStandings[0:1] %}
+                            <tr class="table-warning clickable-row" data-bs-toggle="modal" data-bs-target="#driver_modal" style="cursor: pointer">
+                                <td>C</td>
+                                <td>{{ driver_standings.Driver.givenName }} {{ driver_standings.Driver.familyName }}</td>
+                                <td>{{ driver_standings.Driver.nationality }}</td>
+                                <td>{{ driver_standings.Constructors[0].name }}</td>
+                                <td>{{ driver_standings.points }}</td>
+                                <td>{{ driver_standings.wins }}</td>
+                            </tr>
+                            {% endfor %} {% for driver_standings in drivers_standings.StandingsLists[0].DriverStandings[1:3] %}
+                            <tr class="clickable-row" data-bs-toggle="modal" data-bs-target="#driver_modal" style="cursor: pointer">
+                                <td>{{ driver_standings.position }}</td>
+                                <td>{{ driver_standings.Driver.givenName }} {{ driver_standings.Driver.familyName }}</td>
+                                <td>{{ driver_standings.Driver.nationality }}</td>
+                                <td>{{ driver_standings.Constructors[0].name }}</td>
+                                <td>{{ driver_standings.points }}</td>
+                                <td>{{ driver_standings.wins }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col">
-                <table class="table table-dark table-hover">
-                    <thead class="table table-dark">
-                        <tr>
-                            <th>Position</th>
-                            <th>Name</th>
-                            <th>Nationality</th>
-                            <th>Points</th>
-                            <th>Wins</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for constructor_standings in constructors_standings.StandingsLists[0].ConstructorStandings[0:1] %}
-                        <tr class="table-warning clickable-row" data-bs-toggle="modal" data-bs-target="#constructor_modal" style="cursor: pointer">
-                            <td>C</td>
-                            <td>{{ constructor_standings.Constructor.name}}</td>
-                            <td>{{ constructor_standings.Constructor.nationality }}</td>
-                            <td>{{ constructor_standings.points }}</td>
-                            <td>{{ constructor_standings.wins }}</td>
-                        </tr>
-                        {% endfor %} {% for constructor_standings in constructors_standings.StandingsLists[0].ConstructorStandings[1:3] %}
-                        <tr class="table-dark clickable-row" data-bs-toggle="modal" data-bs-target="#constructor_modal" style="cursor: pointer">
-                            <td>{{ constructor_standings.position }}</td>
-                            <td>{{ constructor_standings.Constructor.name}}</td>
-                            <td>{{ constructor_standings.Constructor.nationality }}</td>
-                            <td>{{ constructor_standings.points }}</td>
-                            <td>{{ constructor_standings.wins }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="bg-white pb-3 rounded-4 shadow card2">
+                    <h4 class="text-light bg-danger rounded-top-4 p-2 text-center">{{ season_year }} Constructors Championship</h4>
+                    <table class="table table-hover">
+                        <thead class="table">
+                            <tr>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Nationality</th>
+                                <th>Points</th>
+                                <th>Wins</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for constructor_standings in constructors_standings.StandingsLists[0].ConstructorStandings[0:1] %}
+                            <tr class="table-warning clickable-row" data-bs-toggle="modal" data-bs-target="#constructor_modal" style="cursor: pointer">
+                                <td>C</td>
+                                <td>{{ constructor_standings.Constructor.name}}</td>
+                                <td>{{ constructor_standings.Constructor.nationality }}</td>
+                                <td>{{ constructor_standings.points }}</td>
+                                <td>{{ constructor_standings.wins }}</td>
+                            </tr>
+                            {% endfor %} {% for constructor_standings in constructors_standings.StandingsLists[0].ConstructorStandings[1:3] %}
+                            <tr class="clickable-row" data-bs-toggle="modal" data-bs-target="#constructor_modal" style="cursor: pointer">
+                                <td>{{ constructor_standings.position }}</td>
+                                <td>{{ constructor_standings.Constructor.name}}</td>
+                                <td>{{ constructor_standings.Constructor.nationality }}</td>
+                                <td>{{ constructor_standings.points }}</td>
+                                <td>{{ constructor_standings.wins }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col">
+                <div class="bg-white pb-3 rounded-4 shadow card2">
+                    <h4 class="text-light bg-danger rounded-top-4 p-2 text-center">{{ season_year }} Races</h4>
+                    <table class="table table-hover">
+                        <thead class="table">
+                            <tr>
+                                <th>Round</th>
+                                <th>Race Name</th>
+                                <th>Circuit</th>
+                                <th>Country</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for race in race_results.Races %}
+                            <tr class="clickable-row" data-bs-toggle="modal" data-bs-target="#raceModal{{ race.round }}" style="cursor: pointer">
+                                <td>{{ race.round }}</td>
+                                <td>{{ race.raceName }}</td>
+                                <td>{{ race.Circuit.circuitName }}</td>
+                                <td>{{ race.Circuit.Location.locality }}, {{ race.Circuit.Location.country }}</td>
+                                <td>{{ race.date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <table class="table table-dark table-hover">
-        <thead class="table table-dark">
-            <tr>
-                <th>Round</th>
-                <th>Race Name</th>
-                <th>Circuit</th>
-                <th>Country</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for race in race_results.Races %}
-            <tr class="table-dark clickable-row" data-bs-toggle="modal" data-bs-target="#raceModal{{ race.round }}" style="cursor: pointer">
-                <td>{{ race.round }}</td>
-                <td>{{ race.raceName }}</td>
-                <td>{{ race.Circuit.circuitName }}</td>
-                <td>{{ race.Circuit.Location.locality }}, {{ race.Circuit.Location.country }}</td>
-                <td>{{ race.date }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
     <!-- Race Modal -->
     {% for race in race_results.Races %}

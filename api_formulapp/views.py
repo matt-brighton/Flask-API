@@ -9,9 +9,10 @@ views = Blueprint('views', __name__)
 
 ERGAST_API_BASE_URL = 'http://ergast.com/api/f1/'
 current_year = datetime.now().year
+OPEN_F1_BASE_URL = 'https://api.openf1.org/v1/'
 
-
-def get_data_from_api(url):
+# METHODS
+def get_ergast_data(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -20,11 +21,32 @@ def get_data_from_api(url):
         logging.error(f"Error fetching data from {url}: {str(e)}")
         raise
 
+def get_openf1_data(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return json.loads(response.content)
+        
+    except requests.RequestException as e:
+        logging.error(f"Error fetching data from {url}: {str(e)}")
+        raise
+
+def process_position_data(data):
+    for entry in data:
+        entry['date'] = datetime.fromisoformat(entry['date'])
+        entry['date'] = entry['date'].strftime('%d-%m-%Y %H:%M')
+    
+    return data
+
 def get_season_data(season_year):
-    season_race_data = get_data_from_api(f"{ERGAST_API_BASE_URL}{season_year}.json?limit=1000")
-    drivers_standings = get_data_from_api(f"{ERGAST_API_BASE_URL}{season_year}/driverStandings.json?limit=10000")
-    constructors_standings = get_data_from_api(f"{ERGAST_API_BASE_URL}{season_year}/constructorStandings.json?limit=10000")
-    race_results = get_data_from_api(f"{ERGAST_API_BASE_URL}{season_year}/results.json?limit=1000000")
+    season_race_data = get_ergast_data(f"{ERGAST_API_BASE_URL}{season_year}.json?limit=1000")
+    drivers_standings = get_ergast_data(f"{ERGAST_API_BASE_URL}{season_year}/driverStandings.json?limit=10000")
+    constructors_standings = get_ergast_data(f"{ERGAST_API_BASE_URL}{season_year}/constructorStandings.json?limit=10000")
+    race_results = get_ergast_data(f"{ERGAST_API_BASE_URL}{season_year}/results.json?limit=1000000")
+    for race in race_results['RaceTable']['Races']:
+        original_date = race['date']
+        formatted_date = datetime.strptime(original_date, '%Y-%m-%d').strftime('%d/%m/%Y')
+        race['date'] = formatted_date
     return {
         'season_year': season_race_data['RaceTable']['season'],
         'total_races': season_race_data['total'],
@@ -34,10 +56,10 @@ def get_season_data(season_year):
     }
 
 def get_all_seasons_data():
-    all_seasons_data = get_data_from_api(f"{ERGAST_API_BASE_URL}seasons.json?limit=1000")
+    all_seasons_data = get_ergast_data(f"{ERGAST_API_BASE_URL}seasons.json?limit=1000")
     return [{'seasons': season['season']} for season in all_seasons_data['SeasonTable']['Seasons']]
 
-
+# ROUTES
 @views.route('/', methods=['GET'])
 def index():
     try:
@@ -47,7 +69,6 @@ def index():
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
-
 
 @views.route('/get_selected_season', methods=['POST'])
 def get_selected_season():
@@ -60,7 +81,6 @@ def get_selected_season():
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
 
-
 @views.route('/quiz_me', methods=['POST', 'GET'])
 def quiz_me():
     quiz_selected_year = request.form.get('quiz_selected_year') if request.method == 'POST' else request.args.get('quiz_selected_year')
@@ -70,7 +90,6 @@ def quiz_me():
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
-
 
 @views.route('/submit_form', methods=['POST'])
 def submit_form():
@@ -83,3 +102,17 @@ def submit_form():
         flash("Incorrect. Please try again.", category='error')
 
     return redirect(url_for('views.quiz_me', quiz_selected_year=quiz_selected_year))
+
+@views.route('/latest_meeting', methods=["GET"])
+def current_grid():
+    try:
+        latest_meeting_session_data = get_openf1_data(f"{OPEN_F1_BASE_URL}sessions?session_key=latest")
+        latest_meeting_driver_data = get_openf1_data(f"{OPEN_F1_BASE_URL}drivers?session_key=latest&driver_number=44")
+        latest_meeting_position_data = get_openf1_data(f"{OPEN_F1_BASE_URL}position?session_key=latest&driver_number=44")
+        latest_meeting_position_data = process_position_data(latest_meeting_position_data)
+        latest_meeting_position_data = latest_meeting_position_data[-1] if latest_meeting_position_data else None
+        latest_meeting_radio_data = get_openf1_data(f"{OPEN_F1_BASE_URL}team_radio?session_key=latest&driver_number=44")
+        return render_template('latest_meeting.html', latest_meeting_session_data=latest_meeting_session_data[0], latest_meeting_driver_data=latest_meeting_driver_data[0], latest_meeting_position_data=latest_meeting_position_data, latest_meeting_radio_data=latest_meeting_radio_data)
+    except Exception as e:
+        logging.error(f"An error occurred: {str(e)}")
+        return render_template('error.html', error_message=str(e))
