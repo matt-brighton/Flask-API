@@ -2,39 +2,91 @@
 {% extends 'base.html' %} {% block title %}Latest Meeting{% endblock %} {% block content %}
 <div class="container-fluid"></div>
 <div>
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Dropdown button
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          {% for driver in latest_meeting_driver_data %}
+          <li>{{ driver.driver_number }}</li>
+          {% endfor %}
+        </ul>
+      </div>
     <div class="container-fluid">
         <div class="col">
-            <div class="bg-white pb-3 rounded-4 shadow card2">
+            <div class="bg-white pb-3 rounded-4 shadow">
                 <h4 class="text-light bg-danger rounded-top-4 p-2 text-center">{{ latest_meeting_session_data.location }} - {{latest_meeting_session_data.session_name }}</h4>
-                <table class="table table-hover">
-                    <thead class="table">
-                        <tr>
-                            <th></th>
-                            <th>Full Name</th>
-                            <th>Position</th>
-                            <th>Driver Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="clickable-row">
-                            <td><img src="{{ latest_meeting_driver_data.headshot_url }}" /></td>
-                            <td>{{ latest_meeting_driver_data.full_name.title() }}</td>
-                            <td>{{ latest_meeting_position_data.position }}</td>
-                            <td>{{ latest_meeting_position_data.driver_number }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <br />
-            <div class="bg-white pb-3 rounded-4 shadow card2">
-                {% for radio in latest_meeting_radio_data %}
-                <audio controls>
-                    <source src="{{ radio.recording_url}}" type="audio/mpeg" />
-                </audio>
-                {% endfor %}
+                <div class="row">
+                    <div class="col text-center">
+                        <img class="img-fluid" src="{{ latest_meeting_driver_data.headshot_url }}" />
+                    </div>
+                    <div class="col-10">
+                        <table class="table table-hover">
+                            <thead class="table">
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Current Position</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="clickable-row">
+                                    <td>{{ latest_meeting_driver_data.full_name.title() }}</td>
+                                    <td>{{ latest_meeting_position_data.position }}</td>
+                                    <td>{{ latest_meeting_position_data.date }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col text-center">
+                        <table class="table table-hover">
+                            <thead class="table">
+                                <tr>
+                                    <th>Lap</th>
+                                    <th>Sector 1</th>
+                                    <th>Sector 2</th>
+                                    <th>Sector 3</th>
+                                    <th>Lap Time</th>
+                                    <th>Speedtrap Speed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for lap in latest_meeting_lap_data %}
+                                <tr class="clickable-row">
+                                    <td>{{ lap.lap_number }}</td>
+                                    <td>{{ lap.duration_sector_1 }}</td>
+                                    <td>{{ lap.duration_sector_2 }}</td>
+                                    <td>{{ lap.duration_sector_3 }}</td>
+                                    <td>{{ lap.lap_duration }}</td>
+                                    <td>{{ lap.st_speed }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
+        <br />
+        <div class="row gx-2 gy-3">
+            {% for radio in latest_meeting_radio_data %}
+            <div class="col">
+                <div class="container">
+                    <div class="col text-center">
+                        <div class="bg-light text-light pb-3 rounded-4 shadow">
+                        <p class="text-light bg-danger rounded-top-4 p-2 text-center">{{ radio.date }}</p>
+                            <audio controls class="p-2">
+                                <source src="{{ radio.recording_url}}" type="audio/mpeg" />
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
-    {% endblock %}
 </div>
+{% endblock %}

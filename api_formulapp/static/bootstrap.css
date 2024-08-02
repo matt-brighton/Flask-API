@@ -11361,3 +11361,9 @@ fieldset:disabled .btn {
 .grid-title:hover {
     color: var(--bs-danger);
 }
+
+.audio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
