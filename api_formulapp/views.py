@@ -12,8 +12,6 @@ current_year = datetime.now().year
 OPEN_F1_BASE_URL = 'https://api.openf1.org/v1/'
 
 # METHODS
-
-
 def get_ergast_data(url):
     try:
         response = requests.get(url)
@@ -22,7 +20,6 @@ def get_ergast_data(url):
     except requests.RequestException as e:
         logging.error(f"Error fetching data from {url}: {str(e)}")
         raise
-
 
 def get_openf1_data(url):
     try:
@@ -34,13 +31,11 @@ def get_openf1_data(url):
         logging.error(f"Error fetching data from {url}: {str(e)}")
         raise
 
-
 def process_datetime(data):
     for entry in data:
         entry['date'] = datetime.fromisoformat(entry['date'])
         entry['date'] = entry['date'].strftime('%d-%m-%Y @ %H:%M')
     return data
-
 
 def convert_mins(data):
     for entry in data:
@@ -54,7 +49,6 @@ def convert_mins(data):
         entry['lap_duration'] = f"{minutes:02}:{whole_seconds:02}.{milliseconds:03}"
 
     return data
-
 
 def get_season_data(season_year):
     season_race_data = get_ergast_data(
@@ -78,15 +72,57 @@ def get_season_data(season_year):
         'race_results': race_results['RaceTable']
     }
 
-
 def get_all_seasons_data():
+
+
+    
+
     all_seasons_data = get_ergast_data(
         f"{ERGAST_API_BASE_URL}seasons.json?limit=1000")
     return [{'seasons': season['season']} for season in all_seasons_data['SeasonTable']['Seasons']]
 
+def render_driver_data(driver_number):
+    try:
+        current_drivers = get_current_drivers()
+        latest_meeting_session_data = get_openf1_data(f"{OPEN_F1_BASE_URL}sessions?session_key=latest")[0]
+        latest_meeting_racecontrol_data = get_openf1_data(f"{OPEN_F1_BASE_URL}race_control?session_key=latest")
+        last_message = latest_meeting_racecontrol_data[-1]
+        latest_meeting_driver_data = get_openf1_data(f"{OPEN_F1_BASE_URL}drivers?session_key=latest&driver_number={driver_number}")[0]
+        latest_meeting_position_data = get_latest_meeting_position_data(driver_number)
+        latest_meeting_radio_data = get_latest_meeting_radio_data(driver_number)
+        latest_meeting_lap_data = get_latest_meeting_lap_data(driver_number)
+        
+        return render_template('latest_meeting.html', 
+                               latest_meeting_session_data=latest_meeting_session_data, 
+                               latest_meeting_driver_data=latest_meeting_driver_data,
+                               latest_meeting_position_data=latest_meeting_position_data, 
+                               latest_meeting_radio_data=latest_meeting_radio_data,
+                               latest_meeting_lap_data=latest_meeting_lap_data, 
+                               current_drivers=current_drivers, 
+                               latest_meeting_racecontrol_data=latest_meeting_racecontrol_data, 
+                               last_message=last_message)
+    except Exception as e:
+        logging.error(f"An error occurred: {str(e)}")
+        return render_template('error.html', error_message=str(e))
+
+def get_current_drivers():
+    drivers_data = get_openf1_data(f"{OPEN_F1_BASE_URL}drivers")
+    current_drivers = {driver['driver_number']: driver['full_name'] for driver in drivers_data}
+    return current_drivers
+
+def get_latest_meeting_position_data(driver_number):
+    position_data = get_openf1_data(f"{OPEN_F1_BASE_URL}position?session_key=latest&driver_number={driver_number}")
+    position_data = process_datetime(position_data)
+    return position_data[-1] if position_data else None
+
+def get_latest_meeting_radio_data(driver_number):
+    radio_data = get_openf1_data(f"{OPEN_F1_BASE_URL}team_radio?session_key=latest&driver_number={driver_number}")
+    return process_datetime(radio_data)
+
+def get_latest_meeting_lap_data(driver_number):
+    lap_data = get_openf1_data(f"{OPEN_F1_BASE_URL}laps?session_key=latest&driver_number={driver_number}")
+    return reversed(convert_mins(lap_data))
 # ROUTES
-
-
 @views.route('/', methods=['GET'])
 def index():
     try:
@@ -96,7 +132,6 @@ def index():
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
-
 
 @views.route('/get_selected_season', methods=['POST'])
 def get_selected_season():
@@ -109,7 +144,6 @@ def get_selected_season():
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
 
-
 @views.route('/quiz_me', methods=['POST', 'GET'])
 def quiz_me():
     quiz_selected_year = request.form.get(
@@ -120,7 +154,6 @@ def quiz_me():
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
-
 
 @views.route('/submit_form', methods=['POST'])
 def submit_form():
@@ -134,39 +167,11 @@ def submit_form():
 
     return redirect(url_for('views.quiz_me', quiz_selected_year=quiz_selected_year))
 
-
-@views.route('/latest_meeting', methods=["GET"])
+@views.route('/latest_meeting', methods=['GET', 'POST'])
 def current_grid():
-    try:
-        drivers_data = get_openf1_data(f"{OPEN_F1_BASE_URL}drivers")
-        driver_map = {}
-        for driver in drivers_data:
-            driver_number = driver['driver_number']
-            driver_name = driver['full_name']
-            if driver_number not in driver_map:
-                driver_map[driver_number] = driver_name
-        print(driver_map)
-        latest_meeting_session_data = get_openf1_data(
-            f"{OPEN_F1_BASE_URL}sessions?session_key=latest")
-        latest_meeting_driver_data = get_openf1_data(
-            f"{OPEN_F1_BASE_URL}drivers?session_key=latest&driver_number=44")
-        latest_meeting_position_data = get_openf1_data(
-            f"{OPEN_F1_BASE_URL}position?session_key=latest&driver_number=44")
-        latest_meeting_position_data = process_datetime(
-            latest_meeting_position_data)
-        latest_meeting_position_data = latest_meeting_position_data[-1] if latest_meeting_position_data else None
-        latest_meeting_radio_data = get_openf1_data(
-            f"{OPEN_F1_BASE_URL}team_radio?session_key=latest&driver_number=44")
-        latest_meeting_radio_data = process_datetime(
-            latest_meeting_radio_data)
-        latest_meeting_lap_data = get_openf1_data(
-            f"{OPEN_F1_BASE_URL}laps?session_key=latest&driver_number=44")
-        latest_meeting_lap_data = reversed(
-            convert_mins(latest_meeting_lap_data))
-        return render_template('latest_meeting.html', latest_meeting_session_data=latest_meeting_session_data[0], latest_meeting_driver_data=latest_meeting_driver_data[0],
-                                latest_meeting_position_data=latest_meeting_position_data, latest_meeting_radio_data=latest_meeting_radio_data,
-                                latest_meeting_lap_data=latest_meeting_lap_data)
+    return render_driver_data(driver_number='44')
 
-    except Exception as e:
-        logging.error(f"An error occurred: {str(e)}")
-        return render_template('error.html', error_message=str(e))
+@views.route('/selected_latest_meeting', methods=['POST'])
+def selected_driver_current_grid():
+    selected_driver = request.form.get('select_driver')
+    return render_driver_data(driver_number=selected_driver)
