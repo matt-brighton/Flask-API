@@ -4588,10 +4588,9 @@ fieldset:disabled .btn {
     display: block;
     padding: var(--bs-pagination-padding-y) var(--bs-pagination-padding-x);
     font-size: var(--bs-pagination-font-size);
-    color: var(--bs-pagination-color);
+    color: var(--bs-black);
     text-decoration: none;
-    background-color: var(--bs-pagination-bg);
-    border: var(--bs-pagination-border-width) solid var(--bs-pagination-border-color);
+    background-color: var(--bs-light);
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -4601,13 +4600,13 @@ fieldset:disabled .btn {
 }
 .page-link:hover {
     z-index: 2;
-    color: var(--bs-pagination-hover-color);
-    background-color: var(--bs-pagination-hover-bg);
+    color: var(--bs-white);
+    background-color: var(--bs-secondary);
     border-color: var(--bs-pagination-hover-border-color);
 }
 .page-link:focus {
     z-index: 3;
-    color: var(--bs-pagination-focus-color);
+    color: var(--bs-black);
     background-color: var(--bs-pagination-focus-bg);
     outline: 0;
     box-shadow: var(--bs-pagination-focus-box-shadow);
@@ -4616,8 +4615,7 @@ fieldset:disabled .btn {
 .page-link.active {
     z-index: 3;
     color: var(--bs-pagination-active-color);
-    background-color: var(--bs-pagination-active-bg);
-    border-color: var(--bs-pagination-active-border-color);
+    background-color: var(--bs-red);
 }
 .disabled > .page-link,
 .page-link.disabled {

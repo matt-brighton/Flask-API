@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 {% extends 'base.html' %} {% block title %}Home{% endblock %} {% block content %}
-<div class="container-fluid">
-</div>
+<div class="container-fluid"></div>
 <div>
     <div class="container-fluid">
         <div class="row">
@@ -106,6 +105,25 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <br />
+                    <nav class="ms-4">
+                        <ul class="pagination">
+                            <li class="page-item {% if race_number == 1 %}disabled{% endif %}">
+                                <a class="page-link" href="{% if race_number > 1 %}{{ url_for('views.index', race_number=race_number-1) }}{% else %}#{% endif %}"> Previous </a>
+                            </li>
+                            {% if race_number <= 5 %}
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('views.index', race_number=race_number-5) }}">{{ race_number-5}}</a></li>
+                            {% endif %}
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link active" href="#">{{ race_number }}</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="{{ url_for('views.index', race_number=race_number+5) }}">{{ race_number + 5 }}</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('views.index', race_number=race_number+1) }}"> Next </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 # GLOBALS
 views = Blueprint('views', __name__)
 ERGAST_API_BASE_URL = 'http://ergast.com/api/f1/'
-current_year = datetime.now().year
 OPEN_F1_BASE_URL = 'https://api.openf1.org/v1/'
+current_year = datetime.now().year
 
 # METHODS
 def get_ergast_data(url):
@@ -50,15 +50,15 @@ def convert_mins(data):
 
     return data
 
-def get_season_data(season_year):
+def get_season_data(season_year, race_number):
     season_race_data = get_ergast_data(
-        f"{ERGAST_API_BASE_URL}{season_year}.json?limit=1000")
+        f"{ERGAST_API_BASE_URL}{season_year}.json?limit=100000")
     drivers_standings = get_ergast_data(
-        f"{ERGAST_API_BASE_URL}{season_year}/driverStandings.json?limit=10000")
+        f"{ERGAST_API_BASE_URL}{season_year}/driverStandings.json?limit=1000000")
     constructors_standings = get_ergast_data(
-        f"{ERGAST_API_BASE_URL}{season_year}/constructorStandings.json?limit=10000")
+        f"{ERGAST_API_BASE_URL}{season_year}/constructorStandings.json?limit=1000000")
     race_results = get_ergast_data(
-        f"{ERGAST_API_BASE_URL}{season_year}/results.json?limit=1000000")
+        f"{ERGAST_API_BASE_URL}{season_year}/{race_number}/results.json?limit=50")
     for race in race_results['RaceTable']['Races']:
         original_date = race['date']
         formatted_date = datetime.strptime(
@@ -70,7 +70,7 @@ def get_season_data(season_year):
         'drivers_standings': drivers_standings['StandingsTable'],
         'constructors_standings': constructors_standings['StandingsTable'],
         'race_results': race_results['RaceTable']
-    }
+    }  
 
 def get_all_seasons_data():
 
@@ -126,9 +126,10 @@ def get_latest_meeting_lap_data(driver_number):
 @views.route('/', methods=['GET'])
 def index():
     try:
-        current_season_data = get_season_data(current_year)
+        race_number = request.args.get('race_number', 1, type=int)
+        current_season_data = get_season_data(current_year, race_number)
         all_season_years = get_all_seasons_data()
-        return render_template('index.html', years=all_season_years, user=current_user, **current_season_data)
+        return render_template('index.html', years=all_season_years, user=current_user, **current_season_data, race_number=race_number)
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
@@ -136,10 +137,11 @@ def index():
 @views.route('/get_selected_season', methods=['POST'])
 def get_selected_season():
     try:
+        race_number = request.args.get('race_number', 1, type=int)
         selected_season_year = request.form.get('season_selection')
-        selected_season_data = get_season_data(selected_season_year)
+        selected_season_data = get_season_data(selected_season_year. race_number)
         all_season_years = get_all_seasons_data()
-        return render_template('index.html', years=all_season_years, user=current_user, **selected_season_data)
+        return render_template('index.html', years=all_season_years, user=current_user, **selected_season_data, race_number=race_number)
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         return render_template('error.html', error_message=str(e))
