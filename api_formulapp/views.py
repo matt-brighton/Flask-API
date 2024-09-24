@@ -139,7 +139,7 @@ def get_selected_season():
     try:
         race_number = request.args.get('race_number', 1, type=int)
         selected_season_year = request.form.get('season_selection')
-        selected_season_data = get_season_data(selected_season_year. race_number)
+        selected_season_data = get_season_data(selected_season_year, race_number)
         all_season_years = get_all_seasons_data()
         return render_template('index.html', years=all_season_years, user=current_user, **selected_season_data, race_number=race_number)
     except Exception as e:
