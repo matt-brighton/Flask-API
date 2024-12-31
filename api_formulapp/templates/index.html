@@ -108,20 +108,22 @@
                     <br />
                     <nav class="ms-4">
                         <ul class="pagination">
-                            <li class="page-item {% if race_number == 1 %}disabled{% endif %}">
-                                <a class="page-link" href="{% if race_number > 1 %}{{ url_for('views.index', race_number=race_number-1) }}{% else %}#{% endif %}"> Previous </a>
-                            </li>
-                            {% if race_number <= 5 %}
+                            {% if race_number != 1 %}
+                            <li class="page-item"><a class="page-link" href="{{url_for('views.index', race_number=race_number-1) }}">Previous</a></li>
                             {% else %}
-                            <li class="page-item"><a class="page-link" href="{{ url_for('views.index', race_number=race_number-5) }}">{{ race_number-5}}</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="{{ race_number-1 }}">Previous</a></li>
+                            {% endif %} 
+                        <button class="dropdown-toggle btn btn-light p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">Round: {{ race_number }}</button>
+                        <ul class="dropdown-menu">
+                            {% for race_name in race_names %}
+                            <li><a class="dropdown-item" href="{{ url_for('views.index', race_number=race_name.round) }}">{{ race_name.raceName }}</a></li>
+                            {% endfor %}
+                        </ul>
+                            {% if race_number != total_races %}
+                            <li class="page-item"><a class="page-link" href="{{url_for('views.index', race_number=race_number+1) }}">Next</a></li>
+                            {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="{{ race_number-1 }}">Next</a></li>
                             {% endif %}
-                            <li class="page-item" aria-current="page">
-                                <a class="page-link active" href="#">{{ race_number }}</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="{{ url_for('views.index', race_number=race_number+5) }}">{{ race_number + 5 }}</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="{{ url_for('views.index', race_number=race_number+1) }}"> Next </a>
-                            </li>
                         </ul>
                     </nav>
                 </div>

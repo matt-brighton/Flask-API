@@ -4250,7 +4250,6 @@ fieldset:disabled .btn {
     transition: 300ms;
 }
 .card2:hover {
-    transform: scale(0.98);
     box-shadow: var(--bs-box-shadow-lg)
 }
     
@@ -11364,4 +11363,9 @@ fieldset:disabled .btn {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .footer {
+    background-color: var(--bs-red);
+    color: var(--bs-white)
   }

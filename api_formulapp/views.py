@@ -1,6 +1,7 @@
 import json
 import logging
 import requests
+from rich import print
 from flask import render_template, Blueprint, request, jsonify, flash, redirect, url_for
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
@@ -66,17 +67,14 @@ def get_season_data(season_year, race_number):
         race['date'] = formatted_date
     return {
         'season_year': season_race_data['RaceTable']['season'],
-        'total_races': season_race_data['total'],
+        'total_races': int(season_race_data['total']),
+        'race_names': season_race_data['RaceTable']['Races'],
         'drivers_standings': drivers_standings['StandingsTable'],
         'constructors_standings': constructors_standings['StandingsTable'],
         'race_results': race_results['RaceTable']
     }  
 
 def get_all_seasons_data():
-
-
-    
-
     all_seasons_data = get_ergast_data(
         f"{ERGAST_API_BASE_URL}seasons.json?limit=1000")
     return [{'seasons': season['season']} for season in all_seasons_data['SeasonTable']['Seasons']]

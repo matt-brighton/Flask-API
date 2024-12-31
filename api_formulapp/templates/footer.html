@@ -1,0 +1,42 @@
+{% block content %}
+<div class="container-fluid footer">
+    <div class="row p-3">
+        <div class="col-12 col-xl-8 ms-xl-4 pb-4 pt-4 border-bottom">
+            <h4 class="text-center pb-2">About</h4>
+            <div class="row">
+                <div class="col-12">
+                    <p>Step into the rich history of Formula 1 with Historical F1, your go-to source for detailed information on past races. Explore legendary moments, iconic drivers, and thrilling statistics from F1's storied past. Stay connected with real-time updates from current sessions, bringing the excitement of today’s races right to you. Whether you're a seasoned fan or a curious newcomer, Historical F1 has everything you need to fuel your passion for the sport.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm text-center pb-4 pt-4 border-bottom">
+            <h4>Explore</h4>
+            <div class="row">
+                <a class="link-light pb-2" href="{{ url_for('views.index') }}">Home</a>
+                <a class="link-light pb-2" href="{{ url_for('auth.signup')}}">Sign Up</a>
+                <a class="link-light pb-2" href="{{ url_for('auth.signup')}}">Log In</a>
+                <a class="link-light pb-2" href="{{ url_for('views.current_grid')}}">Latest Meeting</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm text-center pb-4 pt-4 border-bottom">
+            <h4>Contact</h4>
+            <div class="row">
+                <a class="link-light pb-2" href="#">Contact Form</a>
+            </div>
+        </div>
+        <div class="col-12 col-sm text-center pb-4 pt-4 border-bottom">
+            <h4>Socials</h4>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-3">
+                    <a class="nav-link pb-2" href="https://www.instagram.com/mb__travelphotog/?igsh=MWFvcmplNnh1a2Z6bA%3D%3D&utm_source=qr"><i class="bi bi-instagram h4"></i></a>
+                </div>
+                <div class="col-3">
+                    <a class="nav-link pb-2" href="http://google.co.uk"><i class="bi bi-twitter-x h4"></i></a>
+                </div>
+                <div class="col-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
